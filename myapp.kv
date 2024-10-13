@@ -1,0 +1,54 @@
+<MyScreenManager>:
+    HomeScreen:
+        name: "home"
+    AddTasksScreen:
+        name: "add task"
+    RecordScreen:
+        name: "record"
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: "Add task"
+            size_hint_y: 0.1
+            pos_hint: {"center_x": 0.5}  # Center the button
+            on_release: root.manager.current = 'add task'
+        Button:
+            text: "Records"
+            size_hint_y: 0.1
+            pos_hint: {"center_x": 0.5}  # Center the button
+            on_release: root.manager.current = 'record'
+        Label:
+
+
+<AddTasksScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: "back"
+            on_release: root.manager.current = 'home'
+
+        Label:
+            text: "This is the Add tasks Screen"
+            font_size: 24
+
+<RecordScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: "back"
+            size_hint_y: 0.1
+            on_release: root.manager.current = 'home'
+        MDTextField:
+            id: date_field
+            hint_text: "Choose a date"
+            readonly: True
+            on_focus: if self.focus: app.show_date_picker()
+
+            multiline: False
+
+
+        Label:
+            text: "This is the Record Screen"
+            font_size: 24
