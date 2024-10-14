@@ -7,7 +7,7 @@ from kivymd.uix.pickers import MDDatePicker
 
 
 # Define the three different screens
-class HomeScreen(Screen):
+class HomeScreen(BoxLayout):
     pass
 
 class AddTasksScreen(Screen):
