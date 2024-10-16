@@ -1,0 +1,44 @@
+<MenuScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: ["10dp", "10dp", "10dp", "10dp"]
+        spacing: "10dp"
+        Button:
+            text: "chart will be here"
+            
+        TaskScrollView
+
+
+
+<TaskScrollView@ScrollView>:
+    TaskStackLayout:
+        size_hint: 1, None
+        height:self.minimum_height
+        BoxLayout:
+            size_hint: 1, None
+            height: "80dp"
+            Button:
+                text:"Tasks"
+                font_size: 20
+                background_color: (0, 1, 1, 1)
+            Button:
+                text:"Add"
+                size_hint:0.1, 1
+                background_color: (0.5, 0 , 0, 1)
+        TaskElement
+        TaskElement
+        TaskElement
+                
+
+<TaskElement@BoxLayout>:
+
+    size_hint: 1, None
+    height: "40dp"
+    Button:
+        text:"Task"
+    Button:
+        text:"delete"
+        size_hint:0.1, 1
+        background_color: (0.5, 0 , 0, 1)
+        
+
