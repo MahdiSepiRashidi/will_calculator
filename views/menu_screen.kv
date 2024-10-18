@@ -3,7 +3,8 @@
         orientation: "vertical"
         padding: ["10dp", "10dp", "10dp", "10dp"]
         spacing: "10dp"
-        ChartView:
+        BoxLayout:
+            id: ChartView
         TaskBar:
             id: TaskBar
         ScrollView:
@@ -11,10 +12,6 @@
                 id: TaskStack
                 size_hint : 1, None
                 height : self.minimum_height
-
-
-<ChartView@Button>:
-    text : "chart will be shown here"
     
 <TaskBar@BoxLayout>:
     size_hint: 1, None

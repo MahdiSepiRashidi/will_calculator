@@ -1,12 +1,14 @@
+from math import sin
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from repository.repository import Repository
 from kivy.lang import Builder
-from kivy.uix.stacklayout import StackLayout
 from kivy.uix.boxlayout import BoxLayout
 import models
 from kivy.app import App
+from kivy.uix.floatlayout import FloatLayout
+from kivy_garden.graph import Graph, MeshLinePlot
 Builder.load_file("views/menu_screen.kv")
 repo = Repository()
 
@@ -20,8 +22,19 @@ class MenuScreen(Screen):
 
             task_stack.add_widget(task_instance)
 
-        return super().on_enter(*args)
 
+
+        graph = Graph(xlabel='X', ylabel='Y', x_ticks_minor=5,
+                x_ticks_major=25, y_ticks_major=1,
+                y_grid_label=True, x_grid_label=True, padding=5,
+                x_grid=True, y_grid=True, xmin=-0, xmax=100, ymin=-1, ymax=1)
+        plot = MeshLinePlot(color=[1, 1, 1, 1])
+        plot.points = [(x, sin(x / 10.)) for x in range(0, 101)]
+        graph.add_plot(plot)
+        chart_view =  self.ids.ChartView
+        chart_view.add_widget(graph)
+
+        return super().on_enter(*args)
 
 class TaskInstance(BoxLayout):
     def __init__(self, task: models.Task, **kwargs):
