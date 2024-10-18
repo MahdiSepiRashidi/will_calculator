@@ -1,44 +1,94 @@
-<MenuScreen>:
+<MenuScreen>:  
     BoxLayout:
         orientation: "vertical"
         padding: ["10dp", "10dp", "10dp", "10dp"]
         spacing: "10dp"
-        Button:
-            text: "chart will be here"
-            
-        TaskScrollView
+        ChartView:
+        TaskBar:
+            id: TaskBar
+        ScrollView:
+            StackLayout:
+                id: TaskStack
+                size_hint : 1, None
+                height : self.minimum_height
 
 
-
-<TaskScrollView@ScrollView>:
-    TaskStackLayout:
-        size_hint: 1, None
-        height:self.minimum_height
-        BoxLayout:
-            size_hint: 1, None
-            height: "80dp"
-            Button:
-                text:"Tasks"
-                font_size: 20
-                background_color: (0, 1, 1, 1)
-            Button:
-                text:"Add"
-                size_hint:0.1, 1
-                background_color: (0.5, 0 , 0, 1)
-        TaskElement
-        TaskElement
-        TaskElement
-                
-
-<TaskElement@BoxLayout>:
-
+<ChartView@Button>:
+    text : "chart will be shown here"
+    
+<TaskBar@BoxLayout>:
     size_hint: 1, None
     height: "40dp"
     Button:
-        text:"Task"
-    Button:
-        text:"delete"
+        text:"Tasks"
+        font_size: 20
+        background_color: (0, 1, 1, 1)
+    AddTaskButton:
+        text:"Add"
         size_hint:0.1, 1
         background_color: (0.5, 0 , 0, 1)
-        
+        on_release: self.open_add_popup()
+
+
+<AddTaskPopup>:
+    size_hint: 0.7, 0.7
+    title: "add a task"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+        TaskTitleTextInput:
+            id: TaskTitleParent
+        TaskTimeSpentTextInput:
+            id: TaskTimeSpentParent
+        DifficultySpinner:
+            id: DifficultySpinner
+        SaveTaskButton
+            id: Save
+            on_release: root.save_task()
+        Label:
+            id: AlertLabel
+            text:""
+            color: (1, 0, 0, 1)
+
+<TaskTitleTextInput@BoxLayout>:
+    #size_hint = 1, None
+    #height: "40dp"
+    Label:
+        size_hint: 0.3, 1
+        pos_hint: {"center_x":0.5, "center_y": 0.5}
+        text: "enter task title: "
+    TextInput:
+        id: TaskTitle
+        size_hint_y: 0.5
+        pos_hint: {"center_x":0.5, "center_y": 0.5}
+        hint_text: "e.g: gym"
+        multiline: False
+
+<TaskTimeSpentTextInput@BoxLayout>:
+    Label:
+        size_hint: 0.3, 1
+        pos_hint: {"center_x":0.5, "center_y": 0.5}
+        padding: "5dp"
+        text: """enter time spent: \n(in minutes)"""
+    TextInput:
+        id: TaskTimeSpent
+        size_hint_y: 0.5
+        pos_hint: {"center_x":0.5, "center_y": 0.5}
+        hint_text: "e.g: 24"
+        multiline: False
+
+<DifficultySpinner@Spinner>:
+    text: "difficulty level"
+    size_hint_y: 0.5
+    pos_hint: {"center_x":0.5, "center_y": 0.5}
+    values: ["very easy", "easy", "normal", "hard", "very hard"]
+
+<SaveTaskButton@Button>:
+    padding: "5dp"
+    size_hint: None, None
+    size: "40dp","40dp"
+    pos_hint: {"center_x":0.5, "center_y": 0.5}
+    text: "Save"
+
 
