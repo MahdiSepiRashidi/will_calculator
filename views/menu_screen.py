@@ -7,7 +7,6 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 import models
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
 from kivy_garden.graph import Graph, MeshLinePlot
 Builder.load_file("views/menu_screen.kv")
 repo = Repository()
