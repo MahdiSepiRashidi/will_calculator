@@ -3,8 +3,6 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from database.repository import Repository
 from kivy.lang import Builder
-import models
-from kivy.app import App
 from kink import di
 Builder.load_file("views/menu_screen.kv")
 repo = Repository()
