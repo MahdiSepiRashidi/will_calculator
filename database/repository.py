@@ -2,9 +2,8 @@ import sqlite3
 from datetime import date
 import models
 
-
 class Repository:
-    def __init__(self):
+    def __init__(self, ):
 
         # loading database
         self.conn = sqlite3.connect('database\will_calculator.db')

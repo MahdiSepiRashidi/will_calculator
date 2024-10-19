@@ -2,26 +2,20 @@ from math import sin
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from repository.repository import Repository
+from database.repository import Repository
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 import models
 from kivy.app import App
 from kivy_garden.graph import Graph, MeshLinePlot
+from kink import di
 Builder.load_file("views/menu_screen.kv")
 repo = Repository()
 
 
 class MenuScreen(Screen):
     def on_enter(self, *args):
-        task_stack = self.ids.TaskStack
-        tasks = repo.get_all_tasks()
-        for task in tasks:
-            task_instance = TaskInstance(task)
-
-            task_stack.add_widget(task_instance)
-
-
+        di["task_service"].fill_task_view(self.ids.TaskStack)
 
         graph = Graph(xlabel='X', ylabel='Y', x_ticks_minor=5,
                 x_ticks_major=25, y_ticks_major=1,
@@ -35,15 +29,7 @@ class MenuScreen(Screen):
 
         return super().on_enter(*args)
 
-class TaskInstance(BoxLayout):
-    def __init__(self, task: models.Task, **kwargs):
-        super().__init__(**kwargs)
-        self.task = task
-        self.size_hint = (1, None)
-        self.height = "40dp"
-        self.add_widget(Button(
-            text=f'text: {task.title} took {task.time_spent} minutes in {task.time_created}'))
-        self.add_widget(TaskDeleteButton(task))
+
 
 
 class TaskDeleteButton(Button):
@@ -95,7 +81,7 @@ class AddTaskPopup(Popup):
         task = repo.add_task(title, time_spent, difficulty)
         app = App.get_running_app()
         menu_screen = app.root.get_screen('menu')
-        task_instance = TaskInstance(task)
+        task_instance = models.TaskInstance(task)
         task_stack = menu_screen.ids.TaskStack
         task_stack.add_widget(task_instance)
         self.dismiss()

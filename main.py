@@ -1,7 +1,9 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from views.menu_screen import MenuScreen
+from bootstrap import inject_dependencies
 
+inject_dependencies()
 class MyScreenManager(ScreenManager):
     pass
 
