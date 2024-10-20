@@ -5,13 +5,27 @@
         spacing: "10dp"
         BoxLayout:
             id: ChartView
+            orientation: "vertical"
+            DatePickerBar:
+                size_hint: 1, 0.2
+                id: DatePickerBar
+
         TaskBar:
             id: TaskBar
         ScrollView:
             StackLayout:
                 id: TaskStack
-                size_hint : 1, None
                 height : self.minimum_height
+
+<DatePickerBar@BoxLayout>:
+    TextInput:
+        hint_text:"year(eg. 2024)"
+        pos_hint: {"center_x":0.25}
+    TextInput:
+        hint_text:"month(eg. 11)"
+        pos_hint: {"center_x":0.75}
+
+
     
 <TaskBar@BoxLayout>:
     size_hint: 1, None
