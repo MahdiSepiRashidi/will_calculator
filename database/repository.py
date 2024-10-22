@@ -15,8 +15,26 @@ class Repository:
                 title TEXT,
                 time_spent INTEGER,
                 difficulty INTEGER,
-                time_created DATE
+                time_created DATE,
+                point INTEGER,
+                FOREIGN KEY (time_spent) REFERENCES Day(date)
             )
+        ''')
+
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS days (
+                date DATE PRIMARY KEY,
+                point INTEGER NOT NULL,
+                total_point INTEGER
+                        )
+        ''')
+
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS app_status (
+                date DATE PRIMARY KEY,
+                point INTEGER NOT NULL,
+                total_point INTEGER
+                        )
         ''')
         self.conn.commit()
 
@@ -29,9 +47,9 @@ class Repository:
         task = models.Task(id=id, title=title, time_spent=time_spent,
                            difficulty=difficulty, time_created=str(date.today()))
         self.cursor.execute('''
-            INSERT INTO tasks (title, time_spent, difficulty, time_created)
-            VALUES (?, ?, ?, ?)
-        ''', (title, int(time_spent), difficulty, task.time_created))
+            INSERT INTO tasks (title, time_spent, difficulty, time_created, point)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (title, int(time_spent), difficulty, task.time_created, task.point))
 
         # Commit the changes
         self.conn.commit()
@@ -47,7 +65,8 @@ class Repository:
                              title=task[1],
                              time_spent=task[2],
                              difficulty=task[3],
-                             time_created=task[4]) for task in tasks]
+                             time_created=task[4],
+                            point = task[5] ) for task in tasks]
         return tasks
 
     def delete_task(self, task_id: int):
@@ -59,3 +78,12 @@ class Repository:
         self.conn.commit()
         tasks = self.get_all_tasks()
         print()
+    
+    def last_day_opened(self):
+        #gets the last day that app opened
+        self.cursor.execute("SELECT last_day_opened FROM app_status")
+        return self.cursor.fetchall()
+    
+    def update_last_day_opened(self, date_opened: date):
+        self.cursor.execute("UPDATE app_status SET last_day_opened = ?", date_opened)
+        self.conn.commit()

@@ -18,12 +18,24 @@
                 height : self.minimum_height
 
 <DatePickerBar@BoxLayout>:
-    TextInput:
-        hint_text:"year(eg. 2024)"
+    Spinner:
+        id: year
+        text:"year"
         pos_hint: {"center_x":0.25}
-    TextInput:
-        hint_text:"month(eg. 11)"
+        values: [str(year) for year in range(2024,2000, -1)]
+    Spinner:
+        id: month
+        text:"month"
         pos_hint: {"center_x":0.75}
+        values: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+    ShowGraphButton:
+        text: "generate"
+        size_hint: 0.25, 1
+        background_color: 1,0,0,1
+        year: root.ids.year.text
+        month: root.ids.month.text
+
+
 
 
     

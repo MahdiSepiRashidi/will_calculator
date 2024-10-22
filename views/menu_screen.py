@@ -16,8 +16,7 @@ class MenuScreen(Screen):
         
 
         return super().on_enter(*args)
-
-
+    
 class AddTaskButton(Button):
     def open_add_popup(self):
         # Open the popup defined in the .kv file
