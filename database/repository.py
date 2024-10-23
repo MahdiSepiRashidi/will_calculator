@@ -79,11 +79,23 @@ class Repository:
         tasks = self.get_all_tasks()
         print()
     
-    def last_day_opened(self):
+    def get_last_day_opened(self):
         #gets the last day that app opened
         self.cursor.execute("SELECT last_day_opened FROM app_status")
         return self.cursor.fetchall()
     
     def update_last_day_opened(self, date_opened: date):
         self.cursor.execute("UPDATE app_status SET last_day_opened = ?", date_opened)
+        self.conn.commit()
+    
+    def get_day(self, date: date) -> models.Day:
+        self.cursor.execute("SELECT * FROM days WHERE date= ? ", date)
+        day = self.cursor.fetchall()
+        day = models.Day(date=day[0],
+                             point=day[1],
+                             total_point=day[2])
+        return day
+
+    def add_day(self, date: date, point: int=0, total_point:int|None=None):
+        self.cursor.execute("INSERT INTO days (date, point, total_point) VALUES (?, ?, ?)")
         self.conn.commit()

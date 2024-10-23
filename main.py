@@ -16,6 +16,7 @@ class WillCalculatorApp(App):
     def on_start(self):
         day_service = di["day_service"]
         
+        day_service.create_new_day()
         day_service.update_total_points()
         return super().on_start()
 

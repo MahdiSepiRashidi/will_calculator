@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kink import di
 from kivy.properties import StringProperty
-from datetime import date
+from datetime import date, timedelta
 
 class Task:
     def __init__(self, id, title, time_spent, difficulty, time_created):
@@ -62,9 +62,10 @@ class Day:
         self.tasks = tasks
         self.point = point # the point gathered in day
         self.total_point = total_point # total will point
+        self.repo = di["repository"]
     
     def update_points(self):
-        pass
-
+        yesterday = self.repo.get_day(self.date - timedelta(days=1))
+        self.total_point = yesterday.total_point + self.point - yesterday.total_point/6
 
 
