@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import date
+import datetime
 import models
 
 class Repository:
@@ -31,9 +32,7 @@ class Repository:
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS app_status (
-                date DATE PRIMARY KEY,
-                point INTEGER NOT NULL,
-                total_point INTEGER
+                last_day_opened DATE
                         )
         ''')
         self.conn.commit()
@@ -54,6 +53,16 @@ class Repository:
         # Commit the changes
         self.conn.commit()
         return task
+    
+    def get_task(self, task_id: int):
+        self.cursor.execute("SELECT * FROM tasks where id = ?", (task_id,))
+        task = self.cursor.fetchone()
+        return models.Task(id=task[0],
+                             title=task[1],
+                             time_spent=task[2],
+                             difficulty=task[3],
+                             time_created=task[4],
+                             point = task[5] )
 
     def get_all_tasks(self):
         self.cursor.execute('''
@@ -82,20 +91,28 @@ class Repository:
     def get_last_day_opened(self):
         #gets the last day that app opened
         self.cursor.execute("SELECT last_day_opened FROM app_status")
-        return self.cursor.fetchall()
+        return self.cursor.fetchone()
     
     def update_last_day_opened(self, date_opened: date):
         self.cursor.execute("UPDATE app_status SET last_day_opened = ?", date_opened)
         self.conn.commit()
     
-    def get_day(self, date: date) -> models.Day:
-        self.cursor.execute("SELECT * FROM days WHERE date= ? ", date)
-        day = self.cursor.fetchall()
-        day = models.Day(date=day[0],
-                             point=day[1],
-                             total_point=day[2])
+    def get_day(self, date_: date) -> models.Day:
+        self.cursor.execute("SELECT * FROM days WHERE date= ? ", (date_,))
+        day_from_db = self.cursor.fetchone()
+        day = datetime.datetime.strptime(day_from_db[0], "%Y-%m-%d").date()
+        day = models.Day(date=day,
+                             point=day_from_db[1],
+                             total_point=day_from_db[2])
         return day
 
     def add_day(self, date: date, point: int=0, total_point:int|None=None):
-        self.cursor.execute("INSERT INTO days (date, point, total_point) VALUES (?, ?, ?)")
+        try:
+            self.cursor.execute("INSERT INTO days (date, point, total_point) VALUES (?, ?, ?)", (date, point, total_point))
+        except sqlite3.IntegrityError:
+            pass
+
         self.conn.commit()
+    
+    def update_day_point(self, day: date, point: int):
+        self.cursor.execute("UPDATE days SET point = (point + ?) WHERE date = ?",(point, day))

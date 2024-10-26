@@ -9,15 +9,16 @@ class MyScreenManager(ScreenManager):
 
 class WillCalculatorApp(App):
     def build(self):
+        self.day_service = di["day_service"]
+
         sm = MyScreenManager()
         sm.add_widget(MenuScreen(name="menu"))
         return sm
     
     def on_start(self):
-        day_service = di["day_service"]
         
-        day_service.create_new_day()
-        day_service.update_total_points()
+        self.day_service.create_new_day()
+        self.day_service.update_total_points()
         return super().on_start()
 
 if __name__ == '__main__':

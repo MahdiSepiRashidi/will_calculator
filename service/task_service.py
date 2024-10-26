@@ -53,11 +53,13 @@ class TaskService:
             AlertLabel.text = "time spent must be in numbers!"
             return None
         task = self.repo.add_task(title, time_spent, difficulty)
+        self.repo.update_day_point(task.time_created, task.point)
         app = App.get_running_app()
         menu_screen = app.root.get_screen('menu')
         task_instance = models.TaskInstance(task)
         task_stack = menu_screen.ids.TaskStack
         task_stack.add_widget(task_instance)
+        
 
     def __popup_is_empty(self, title, time_spent, difficulty):
         if title == "" or time_spent == "" or difficulty == 'difficulty level':

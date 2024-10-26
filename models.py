@@ -6,7 +6,7 @@ from kivy.properties import StringProperty
 from datetime import date, timedelta
 
 class Task:
-    def __init__(self, id, title, time_spent, difficulty, time_created):
+    def __init__(self, id, title, time_spent, difficulty, time_created, point: int=None):
         #TODO: able to add tasks that have no time_spent
         self.id = id
         self.title = title
@@ -65,6 +65,8 @@ class Day:
         self.repo = di["repository"]
     
     def update_points(self):
+        if self.total_point == 0:
+            return None
         yesterday = self.repo.get_day(self.date - timedelta(days=1))
         self.total_point = yesterday.total_point + self.point - yesterday.total_point/6
 
